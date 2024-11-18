@@ -2,6 +2,7 @@ import React from "react";
 import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
 import Home from "./pages/Home";
 import CreatePost from "./pages/CreatePost";
+import PostPage from "./pages/PostPage";
 import './App.css';
 
 function App() {
@@ -23,6 +24,7 @@ function App() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/create" element={<CreatePost />} />
+          <Route path="/post/:id" element={<PostPage />} /> {/* PostPage route */}
         </Routes>
       </div>
     </Router>
