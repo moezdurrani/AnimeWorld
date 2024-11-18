@@ -20,18 +20,19 @@ function PostPage() {
         .single();
   
       if (error) {
-        console.error("Error fetching post:", error); // Log errors to see if it's a query issue
+        console.error("Error fetching post:", error);
         setPost(null);
       } else {
-        console.log("Fetched post:", data); // Log the data to verify it's correct
         setPost(data);
+        setComments(data.comments || []); // Initialize comments as an empty array if null
       }
     } catch (err) {
-      console.error("Unexpected error fetching post:", err); // Log unexpected errors
+      console.error("Unexpected error fetching post:", err);
     } finally {
       setLoading(false);
     }
   };
+  
   
 
   // Handle upvote
@@ -67,7 +68,7 @@ function PostPage() {
         return;
       }
   
-      // Append the new comment to the current comments
+      // Append the new comment to the current comments array
       const updatedComments = [...(currentPost.comments || []), newComment];
   
       // Update the comments column in the database
@@ -81,13 +82,15 @@ function PostPage() {
         return;
       }
   
-      // Update the local comments state and clear the input
+      // Update local comments state and clear the input field
       setComments(updatedComments);
       setNewComment("");
     } catch (err) {
       console.error("Unexpected error adding comment:", err);
     }
   };
+  
+  
   
 
   useEffect(() => {
