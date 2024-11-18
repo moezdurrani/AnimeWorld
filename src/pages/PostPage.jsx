@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { supabase } from "../supabaseClient";
 import "./PostPage.css";
 
 function PostPage() {
   const { id } = useParams(); // Get the post ID from the URL
+  const navigate = useNavigate(); // For navigating after deletion
   const [post, setPost] = useState(null);
   const [comments, setComments] = useState([]);
   const [newComment, setNewComment] = useState("");
@@ -18,7 +19,7 @@ function PostPage() {
         .select("*")
         .eq("id", id)
         .single();
-  
+
       if (error) {
         console.error("Error fetching post:", error);
         setPost(null);
@@ -32,8 +33,6 @@ function PostPage() {
       setLoading(false);
     }
   };
-  
-  
 
   // Handle upvote
   const handleUpvote = async () => {
@@ -54,7 +53,7 @@ function PostPage() {
   // Handle adding a new comment
   const handleAddComment = async () => {
     if (!newComment.trim()) return;
-  
+
     try {
       // Fetch the current comments from the database
       const { data: currentPost, error: fetchError } = await supabase
@@ -62,26 +61,26 @@ function PostPage() {
         .select("comments")
         .eq("id", id)
         .single();
-  
+
       if (fetchError) {
         console.error("Error fetching current comments:", fetchError);
         return;
       }
-  
+
       // Append the new comment to the current comments array
       const updatedComments = [...(currentPost.comments || []), newComment];
-  
+
       // Update the comments column in the database
       const { error: updateError } = await supabase
         .from("posts")
         .update({ comments: updatedComments })
         .eq("id", id);
-  
+
       if (updateError) {
         console.error("Error updating comments:", updateError);
         return;
       }
-  
+
       // Update local comments state and clear the input field
       setComments(updatedComments);
       setNewComment("");
@@ -89,9 +88,28 @@ function PostPage() {
       console.error("Unexpected error adding comment:", err);
     }
   };
-  
-  
-  
+
+  // Handle delete post
+  const handleDeletePost = async () => {
+    const confirmDelete = window.confirm(
+      "Are you sure you want to delete this post? This action cannot be undone."
+    );
+    if (!confirmDelete) return;
+
+    try {
+      const { error } = await supabase.from("posts").delete().eq("id", id);
+
+      if (error) {
+        console.error("Error deleting post:", error);
+        alert("An error occurred while deleting the post.");
+      } else {
+        alert("Post deleted successfully!");
+        navigate("/"); // Navigate back to the home page
+      }
+    } catch (err) {
+      console.error("Unexpected error deleting post:", err);
+    }
+  };
 
   useEffect(() => {
     fetchPost();
@@ -112,8 +130,10 @@ function PostPage() {
       <p>{post.description}</p>
       <p>Posted: {new Date(post.created_at).toLocaleString()}</p>
       <p>Upvotes: {post.upvotes}</p>
-      <button onClick={handleUpvote} className="upvote-button">Upvote</button>
-
+      <div className="post-actions">
+        <button onClick={handleUpvote} className="upvote-button">Upvote</button>
+        <button onClick={handleDeletePost} className="delete-button">Delete Post</button>
+      </div>
       <div className="comments-section">
         <h2>Comments</h2>
         {comments.length > 0 ? (

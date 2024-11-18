@@ -40,3 +40,48 @@
     background-color: #0ea5e9;
   }
   
+
+  /* Delete Button */
+.delete-button {
+    background-color: #e63946;
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+  }
+  
+  .delete-button:hover {
+    background-color: #d62828;
+    transform: translateY(-2px);
+  }
+  
+  .delete-button:active {
+    transform: translateY(1px);
+  }
+  
+
+  /* Delete Button */
+.delete-button {
+    background-color: #e63946;
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    margin-left: 10px;
+  }
+  
+  .delete-button:hover {
+    background-color: #d62828;
+    transform: translateY(-2px);
+  }
+  
+  .delete-button:active {
+    transform: translateY(1px);
+  }
+  
