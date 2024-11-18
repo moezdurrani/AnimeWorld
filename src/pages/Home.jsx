@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { supabase } from "../supabaseClient";
 import { Link } from "react-router-dom";
-import "./Home.css";
+import "./Home.css"; // For styling
 
 function Home() {
   const [posts, setPosts] = useState([]);
@@ -9,7 +9,7 @@ function Home() {
   const fetchPosts = async () => {
     const { data, error } = await supabase
       .from("posts")
-      .select("id, title, created_at, imageURL, upvotes")
+      .select("id, title, created_at, imageURL, upvotes, description")
       .order("created_at", { ascending: false });
 
     if (error) {
@@ -30,14 +30,21 @@ function Home() {
         {posts.length > 0 ? (
           posts.map((post) => (
             <div key={post.id} className="post-card">
-              <h3>
-                <Link to={`/post/${post.id}`}>{post.title}</Link> {/* Link to PostPage */}
-              </h3>
               {post.imageURL && (
                 <img src={post.imageURL} alt={post.title} className="post-image" />
               )}
-              <p>Posted: {new Date(post.created_at).toLocaleString()}</p>
-              <p>{post.upvotes} upvotes</p>
+              <div className="post-content">
+                <h3 className="post-title">
+                  <Link to={`/post/${post.id}`}>{post.title}</Link>
+                </h3>
+                <p className="post-description">{post.description}</p>
+                <div className="post-details">
+                  <p>Posted: {new Date(post.created_at).toLocaleString()}</p>
+                  <div className="post-upvotes">
+                    <span>👍</span> {post.upvotes} Upvotes
+                  </div>
+                </div>
+              </div>
             </div>
           ))
         ) : (

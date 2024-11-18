@@ -28,7 +28,7 @@ body {
 }
 
 .header-search {
-  flex: 2; 
+  flex: 2;
   display: flex;
   justify-content: center;
 }
@@ -59,46 +59,23 @@ body {
   text-decoration: underline;
 }
 
+/* Home page layout */
 .home {
   padding: 20px;
 }
 
-
 .posts-feed {
   display: flex;
   flex-direction: column;
-  align-items: center; 
+  align-items: center; /* Center-align the cards */
   padding: 20px;
+  gap: 20px; /* Add space between post cards */
 }
 
-
-.post-card {
-  width: 80%;
-  max-width: 800px; 
-  padding: 15px;
-  margin: 10px 0;
-  border: 1px solid #ffffff;
-  border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  background-color: #fff;
-}
-
-.post-card h3 {
-  margin: 0;
-  font-size: 1.2rem;
-  color: #333;
-}
-
-.post-card p {
-  margin: 5px 0;
-  color: #666;
-}
 
 .post-image {
-  width: 100%;
-  max-width: 500px;
-  height: auto;
-  margin: 10px 0;
-  border-radius: 5px;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  width: 700px; /* Ensure the image spans the full width of the post card */
+  height: 200px;
+  object-fit: cover;
+  display: block;
 }
