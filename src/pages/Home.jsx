@@ -8,7 +8,7 @@ function Home() {
   const fetchPosts = async () => {
     const { data, error } = await supabase
       .from("posts")
-      .select("id, title, created_at, upvotes")
+      .select("id, title, created_at, upvotes, imageURL") // Include imageURL in the query
       .order("created_at", { ascending: false });
 
     if (error) {
@@ -34,6 +34,13 @@ function Home() {
           filteredPosts.map((post) => (
             <div key={post.id} className="post-card">
               <h3>{post.title}</h3>
+              {post.imageURL && (
+                <img
+                  src={post.imageURL}
+                  alt={post.title}
+                  className="post-image"
+                />
+              )}
               <p>Posted: {new Date(post.created_at).toLocaleString()}</p>
               <p>{post.upvotes} upvotes</p>
             </div>

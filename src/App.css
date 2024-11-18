@@ -81,3 +81,12 @@ body {
   margin: 5px 0;
   color: #666;
 }
+
+.post-image {
+  width: 100%;
+  max-width: 500px;
+  height: auto;
+  margin: 10px 0;
+  border-radius: 5px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
