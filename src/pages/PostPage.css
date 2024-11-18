@@ -24,4 +24,19 @@
     margin: 10px 0;
     color: #333;
   }
+
+  .upvote-button {
+    background-color: #38bdf8;
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1rem;
+    margin-top: 10px;
+  }
+  
+  .upvote-button:hover {
+    background-color: #0ea5e9;
+  }
   

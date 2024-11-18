@@ -24,6 +24,22 @@ function PostPage() {
     setLoading(false);
   };
 
+  // Handle upvote
+  const handleUpvote = async () => {
+    if (!post) return;
+
+    const { error } = await supabase
+      .from("posts")
+      .update({ upvotes: post.upvotes + 1 })
+      .eq("id", id);
+
+    if (error) {
+      console.error("Error upvoting post:", error);
+    } else {
+      setPost({ ...post, upvotes: post.upvotes + 1 }); // Update the local state
+    }
+  };
+
   useEffect(() => {
     fetchPost();
   }, [id]);
@@ -43,6 +59,7 @@ function PostPage() {
       <p>{post.description}</p>
       <p>Posted: {new Date(post.created_at).toLocaleString()}</p>
       <p>Upvotes: {post.upvotes}</p>
+      <button onClick={handleUpvote} className="upvote-button">Upvote</button>
     </div>
   );
 }
