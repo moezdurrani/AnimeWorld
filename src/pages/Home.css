@@ -17,10 +17,10 @@
 }
 
 .post-content {
-    padding: 20px;
+    padding: 10px;
     display: flex;
     flex-direction: column;
-    gap: 10px; /* Space between elements */
+    gap: 0px; /* Space between elements */
   }
 
 

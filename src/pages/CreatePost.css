@@ -1,72 +1,120 @@
 /* CreatePost page styles */
 .create-post {
     max-width: 600px;
-    margin: 20px auto;
-    padding: 20px;
+    margin: 40px auto; /* Add more spacing around the form */
+    padding: 30px; /* Add extra padding for better structure */
     border: 1px solid #ddd;
-    border-radius: 8px;
-    background: #f9f9f9;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    border-radius: 12px; /* More rounded corners */
+    background: #ffffff; /* Pure white background */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Softer shadow for better depth */
+    font-family: Arial, sans-serif; /* Use the same font as the global styles */
+  }
+  
+  .create-post h1 {
+    margin-bottom: 20px; /* Add spacing below the header */
+    font-size: 1.8rem;
+    color: #333;
+    text-align: center; /* Center-align the title */
+    font-weight: bold;
+    border-bottom: 2px solid #38bdf8; /* Add a colored underline */
+    padding-bottom: 10px;
   }
   
   .create-post input,
   .create-post textarea {
     width: 100%;
-    margin: 10px 0;
-    padding: 10px;
+    margin: 15px 0; /* Add more vertical spacing between fields */
+    padding: 12px;
     border: 1px solid #ccc;
-    border-radius: 5px;
+    border-radius: 8px; /* Softer corners for a modern look */
+    font-size: 1rem; /* Increase font size for readability */
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.05); /* Slight inner shadow for depth */
+  }
+  
+  .create-post input:focus,
+  .create-post textarea:focus {
+    outline: none;
+    border-color: #38bdf8; /* Highlight border on focus */
+    box-shadow: 0 0 5px rgba(56, 189, 248, 0.5); /* Add a glow effect */
   }
   
   .create-post button {
     background-color: #38bdf8;
     color: white;
+    margin-left: 10px;
     padding: 10px 15px;
     border: none;
-    border-radius: 5px;
+    border-radius: 8px; /* Softer corners for buttons */
     cursor: pointer;
+    font-size: 1rem; /* Larger button text */
+    transition: background-color 0.3s ease, transform 0.2s ease;
   }
   
   .create-post button:hover {
     background-color: #0ea5e9;
+    transform: translateY(-2px); /* Slight lift on hover */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Add a subtle shadow */
   }
   
-
+  .create-post button:active {
+    transform: translateY(1px); /* Button press effect */
+  }
+  
   .comments-section {
-    margin-top: 20px;
+    margin-top: 30px; /* Add more spacing above the comments section */
   }
   
   .comments-section h2 {
-    margin-bottom: 10px;
+    font-size: 1.5rem;
+    color: #333;
+    margin-bottom: 15px;
+    font-weight: bold;
   }
   
   .comment-input {
     width: 100%;
-    padding: 10px;
+    padding: 12px;
     margin: 10px 0;
     border: 1px solid #ccc;
-    border-radius: 5px;
+    border-radius: 8px; /* Softer corners for inputs */
+    font-size: 1rem;
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.05);
+  }
+  
+  .comment-input:focus {
+    outline: none;
+    border-color: #38bdf8;
+    box-shadow: 0 0 5px rgba(56, 189, 248, 0.5);
   }
   
   .add-comment-button {
     background-color: #38bdf8;
     color: white;
-    padding: 10px 15px;
+    padding: 12px 20px;
     border: none;
-    border-radius: 5px;
+    border-radius: 8px;
     cursor: pointer;
     font-size: 1rem;
+    transition: background-color 0.3s ease, transform 0.2s ease;
   }
   
   .add-comment-button:hover {
     background-color: #0ea5e9;
+    transform: translateY(-2px);
+  }
+  
+  .add-comment-button:active {
+    transform: translateY(1px);
   }
   
   .comments-section p {
     background-color: #f9f9f9;
-    padding: 10px;
-    margin: 5px 0;
-    border-radius: 5px;
+    padding: 12px;
+    margin: 8px 0;
+    border-radius: 8px; /* Softer corners */
     border: 1px solid #ddd;
+    font-size: 0.9rem;
+    color: #555;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05); /* Subtle shadow for depth */
   }
   
