@@ -158,3 +158,64 @@
     border: 1px solid #ddd;
   }
   
+
+  /* Secret Key Input Section */
+.secret-key-input {
+    width: 100%;
+    max-width: 400px;
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 1rem;
+    display: block; /* Ensures it behaves like a block element */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+  }
+  
+  .secret-key-input:focus {
+    border-color: #38bdf8;
+    box-shadow: 0 4px 8px rgba(56, 189, 248, 0.3);
+    outline: none;
+  }
+  
+  /* Secret Key Section Container */
+  .secret-key-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 20px;
+    padding: 10px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  }
+  
+  /* Action Buttons */
+  .post-actions .upvote-button,
+  .post-actions .edit-button,
+  .post-actions .delete-button {
+    background-color: #38bdf8;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 10px 20px;
+    margin: 10px 5px;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+  }
+  
+  .post-actions .upvote-button:hover,
+  .post-actions .edit-button:hover,
+  .post-actions .delete-button:hover {
+    background-color: #0ea5e9;
+    transform: translateY(-2px);
+  }
+  
+  .post-actions .upvote-button:active,
+  .post-actions .edit-button:active,
+  .post-actions .delete-button:active {
+    transform: translateY(1px);
+  }
+  
