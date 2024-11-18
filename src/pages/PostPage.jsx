@@ -186,76 +186,84 @@ function PostPage() {
 
   return (
     <div className="post-page">
-      <h1>{post.title}</h1>
-      {post.imageURL && <img src={post.imageURL} alt={post.title} className="post-image" />}
-      <p>{post.description}</p>
-      <p>Posted: {new Date(post.created_at).toLocaleString()}</p>
-      <p>Upvotes: {post.upvotes}</p>
+  <h1>{post.title}</h1>
+  <p className="post-id">Post ID: {post.id}</p> {/* Display the Post ID */}
+  {post.imageURL && <img src={post.imageURL} alt={post.title} className="post-image" />}
+  <p>{post.description}</p>
+  <p>Posted: {new Date(post.created_at).toLocaleString()}</p>
+  <p>Upvotes: {post.upvotes}</p>
+
+  <div className="secret-key-section">
+    <h3>Enter Your Secret Key</h3>
+    <input
+      type="password"
+      placeholder="Enter Secret Key"
+      value={secretKey}
+      onChange={(e) => setSecretKey(e.target.value)}
+      className="secret-key-input"
+    />
+  </div>
+
+  <div className="post-actions">
+    <button onClick={handleUpvote} className="upvote-button">Upvote</button>
+    <button onClick={startEditing} className="edit-button">Edit Post</button>
+    <button onClick={handleDeletePost} className="delete-button">Delete Post</button>
+  </div>
+
+  {editing ? (
+    <div className="edit-form">
+      <h2>Edit Post</h2>
       <input
-        type="password"
-        placeholder="Enter Secret Key"
-        value={secretKey}
-        onChange={(e) => setSecretKey(e.target.value)}
-        className="secret-key-input"
+        type="text"
+        value={updatedPost.title}
+        onChange={(e) => setUpdatedPost({ ...updatedPost, title: e.target.value })}
+        placeholder="Title"
       />
-      <div className="post-actions">
-        <button onClick={handleUpvote} className="upvote-button">Upvote</button>
-        <button onClick={startEditing} className="edit-button">Edit Post</button>
-        <button onClick={handleDeletePost} className="delete-button">Delete Post</button>
-      </div>
-      {editing ? (
-        <div className="edit-form">
-          <h2>Edit Post</h2>
-          <input
-            type="text"
-            value={updatedPost.title}
-            onChange={(e) => setUpdatedPost({ ...updatedPost, title: e.target.value })}
-            placeholder="Title"
-          />
-          <textarea
-            value={updatedPost.description}
-            onChange={(e) => setUpdatedPost({ ...updatedPost, description: e.target.value })}
-            placeholder="Description"
-          />
-          <input
-            type="text"
-            value={updatedPost.imageURL}
-            onChange={(e) => setUpdatedPost({ ...updatedPost, imageURL: e.target.value })}
-            placeholder="Image URL"
-          />
-          <button onClick={saveChanges} className="save-button">Save Changes</button>
-          <button onClick={() => setEditing(false)} className="cancel-button">Cancel</button>
-        </div>
-      ) : (
-        <div className="comments-section">
-          <h2>Comments</h2>
-          {comments.length > 0 ? (
-            comments.map((comment, index) => (
-              <div key={index} className="comment">
-                <p>{comment}</p>
-                <button
-                  onClick={() => handleDeleteComment(index)}
-                  className="delete-comment-button"
-                >
-                  Delete
-                </button>
-              </div>
-            ))
-          ) : (
-            <p>No comments yet. Be the first to comment!</p>
-          )}
-          <textarea
-            placeholder="Add a comment..."
-            value={newComment}
-            onChange={(e) => setNewComment(e.target.value)}
-            className="comment-input"
-          ></textarea>
-          <button onClick={handleAddComment} className="add-comment-button">
-            Add Comment
-          </button>
-        </div>
-      )}
+      <textarea
+        value={updatedPost.description}
+        onChange={(e) => setUpdatedPost({ ...updatedPost, description: e.target.value })}
+        placeholder="Description"
+      />
+      <input
+        type="text"
+        value={updatedPost.imageURL}
+        onChange={(e) => setUpdatedPost({ ...updatedPost, imageURL: e.target.value })}
+        placeholder="Image URL"
+      />
+      <button onClick={saveChanges} className="save-button">Save Changes</button>
+      <button onClick={() => setEditing(false)} className="cancel-button">Cancel</button>
     </div>
+  ) : (
+    <div className="comments-section">
+      <h2>Comments</h2>
+      {comments.length > 0 ? (
+        comments.map((comment, index) => (
+          <div key={index} className="comment">
+            <p>{comment}</p>
+            <button
+              onClick={() => handleDeleteComment(index)}
+              className="delete-comment-button"
+            >
+              Delete
+            </button>
+          </div>
+        ))
+      ) : (
+        <p>No comments yet. Be the first to comment!</p>
+      )}
+      <textarea
+        placeholder="Add a comment..."
+        value={newComment}
+        onChange={(e) => setNewComment(e.target.value)}
+        className="comment-input"
+      ></textarea>
+      <button onClick={handleAddComment} className="add-comment-button">
+        Add Comment
+      </button>
+    </div>
+  )}
+</div>
+
   );
 }
 
