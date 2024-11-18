@@ -1,13 +1,12 @@
 /* CreatePost page styles */
 .create-post {
     max-width: 600px;
-    margin: 40px auto; /* Add more spacing around the form */
-    padding: 30px; /* Add extra padding for better structure */
+    margin: 20px auto;
+    padding: 25px;
     border: 1px solid #ddd;
-    border-radius: 12px; /* More rounded corners */
-    background: #ffffff; /* Pure white background */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Softer shadow for better depth */
-    font-family: Arial, sans-serif; /* Use the same font as the global styles */
+    border-radius: 8px;
+    background: #f9f9f9;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
   }
   
   .create-post h1 {
@@ -23,12 +22,10 @@
   .create-post input,
   .create-post textarea {
     width: 100%;
-    margin: 15px 0; /* Add more vertical spacing between fields */
-    padding: 12px;
+    margin: 10px 0;
+    padding: 10px;
     border: 1px solid #ccc;
-    border-radius: 8px; /* Softer corners for a modern look */
-    font-size: 1rem; /* Increase font size for readability */
-    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.05); /* Slight inner shadow for depth */
+    border-radius: 5px;
   }
   
   .create-post input:focus,
@@ -42,18 +39,14 @@
     background-color: #38bdf8;
     color: white;
     margin-left: 10px;
-    padding: 10px 15px;
+    padding: 10px 10px;
     border: none;
-    border-radius: 8px; /* Softer corners for buttons */
+    border-radius: 5px;
     cursor: pointer;
-    font-size: 1rem; /* Larger button text */
-    transition: background-color 0.3s ease, transform 0.2s ease;
   }
   
   .create-post button:hover {
     background-color: #0ea5e9;
-    transform: translateY(-2px); /* Slight lift on hover */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Add a subtle shadow */
   }
   
   .create-post button:active {
@@ -118,3 +111,7 @@
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05); /* Subtle shadow for depth */
   }
   
+
+  .create-post input[type="password"] {
+    font-family: inherit; /* Ensure password font matches others */
+  }
