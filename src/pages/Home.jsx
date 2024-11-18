@@ -7,13 +7,14 @@ import "./Home.css";
 function Home({ searchQuery }) {
   const [posts, setPosts] = useState([]);
   const [filteredPosts, setFilteredPosts] = useState([]);
+  const [sortBy, setSortBy] = useState("created_at"); // State to track the sorting order
 
   // Fetch posts from the database
   const fetchPosts = async () => {
     const { data, error } = await supabase
       .from("posts")
       .select("id, title, created_at, imageURL, upvotes, description")
-      .order("created_at", { ascending: false });
+      .order(sortBy, { ascending: false });
 
     if (error) {
       console.error(error);
@@ -24,6 +25,11 @@ function Home({ searchQuery }) {
     }
   };
 
+  // Re-fetch posts when sorting changes
+  useEffect(() => {
+    fetchPosts();
+  }, [sortBy]);
+
   // Filter posts whenever the search query changes
   useEffect(() => {
     const filtered = posts.filter((post) =>
@@ -32,13 +38,26 @@ function Home({ searchQuery }) {
     setFilteredPosts(filtered);
   }, [searchQuery, posts]);
 
-  // Fetch posts when the component mounts
-  useEffect(() => {
-    fetchPosts();
-  }, []);
+  const handleSortChange = (criteria) => {
+    setSortBy(criteria); // Update the sorting criteria
+  };
 
   return (
     <div className="home">
+      <div className="sorting-options">
+        <button
+          className={`sort-button ${sortBy === "created_at" ? "active" : ""}`}
+          onClick={() => handleSortChange("created_at")}
+        >
+          Sort by Newest
+        </button>
+        <button
+          className={`sort-button ${sortBy === "upvotes" ? "active" : ""}`}
+          onClick={() => handleSortChange("upvotes")}
+        >
+          Sort by Upvotes
+        </button>
+      </div>
       <div className="posts-feed">
         {filteredPosts.length > 0 ? (
           filteredPosts.map((post) => (
