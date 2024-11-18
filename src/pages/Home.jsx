@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { supabase } from "../supabaseClient";
 import { Link } from "react-router-dom";
-import "./Home.css"; // For styling
+import { timeAgo } from "./timeAgo"; // Import the timeAgo utility
+import "./Home.css";
 
 function Home() {
   const [posts, setPosts] = useState([]);
@@ -39,7 +40,7 @@ function Home() {
                 </h3>
                 <p className="post-description">{post.description}</p>
                 <div className="post-details">
-                  <p>Posted: {new Date(post.created_at).toLocaleString()}</p>
+                  <p>Posted: {timeAgo(post.created_at)}</p> {/* Use the timeAgo function */}
                   <div className="post-upvotes">
                     <span>👍</span> {post.upvotes} Upvotes
                   </div>
