@@ -12,20 +12,27 @@ function PostPage() {
 
   // Fetch post details
   const fetchPost = async () => {
-    const { data, error } = await supabase
-      .from("posts")
-      .select("*")
-      .eq("id", id)
-      .single();
-
-    if (error) {
-      console.error("Error fetching post:", error);
-    } else {
-      setPost(data);
-      setComments(data.comments || []); // Initialize comments
+    try {
+      const { data, error } = await supabase
+        .from("posts")
+        .select("*")
+        .eq("id", id)
+        .single();
+  
+      if (error) {
+        console.error("Error fetching post:", error); // Log errors to see if it's a query issue
+        setPost(null);
+      } else {
+        console.log("Fetched post:", data); // Log the data to verify it's correct
+        setPost(data);
+      }
+    } catch (err) {
+      console.error("Unexpected error fetching post:", err); // Log unexpected errors
+    } finally {
+      setLoading(false);
     }
-    setLoading(false);
   };
+  
 
   // Handle upvote
   const handleUpvote = async () => {
@@ -46,20 +53,42 @@ function PostPage() {
   // Handle adding a new comment
   const handleAddComment = async () => {
     if (!newComment.trim()) return;
-
-    const updatedComments = [...comments, newComment];
-    const { error } = await supabase
-      .from("posts")
-      .update({ comments: updatedComments })
-      .eq("id", id);
-
-    if (error) {
-      console.error("Error adding comment:", error);
-    } else {
-      setComments(updatedComments); // Update local comments state
-      setNewComment(""); // Clear the input field
+  
+    try {
+      // Fetch the current comments from the database
+      const { data: currentPost, error: fetchError } = await supabase
+        .from("posts")
+        .select("comments")
+        .eq("id", id)
+        .single();
+  
+      if (fetchError) {
+        console.error("Error fetching current comments:", fetchError);
+        return;
+      }
+  
+      // Append the new comment to the current comments
+      const updatedComments = [...(currentPost.comments || []), newComment];
+  
+      // Update the comments column in the database
+      const { error: updateError } = await supabase
+        .from("posts")
+        .update({ comments: updatedComments })
+        .eq("id", id);
+  
+      if (updateError) {
+        console.error("Error updating comments:", updateError);
+        return;
+      }
+  
+      // Update the local comments state and clear the input
+      setComments(updatedComments);
+      setNewComment("");
+    } catch (err) {
+      console.error("Unexpected error adding comment:", err);
     }
   };
+  
 
   useEffect(() => {
     fetchPost();
