@@ -222,7 +222,7 @@ function PostPage() {
       {post.imageURL && <img src={post.imageURL} alt={post.title} className="post-image" />}
       <p>{post.description}</p>
       <p>Posted: {new Date(post.created_at).toLocaleString()}</p>
-      <p>Upvotes: {post.upvotes}</p>
+      <p>Upvotes 👍: {post.upvotes}</p>
 
       <div className="secret-key-section">
         <h3>Enter Your Secret Key</h3>
