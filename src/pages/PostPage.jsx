@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate, Link } from "react-router-dom";
 import { supabase } from "../supabaseClient";
 import "./PostPage.css";
 
@@ -7,6 +7,7 @@ function PostPage() {
   const { id } = useParams(); // Get the post ID from the URL
   const navigate = useNavigate(); // For navigating after deletion
   const [post, setPost] = useState(null);
+  const [referencedPost, setReferencedPost] = useState(null); // Store referenced post details
   const [comments, setComments] = useState([]);
   const [newComment, setNewComment] = useState("");
   const [loading, setLoading] = useState(true);
@@ -17,6 +18,7 @@ function PostPage() {
   // Fetch post details
   const fetchPost = async () => {
     try {
+      setLoading(true);
       const { data, error } = await supabase
         .from("posts")
         .select("*")
@@ -25,10 +27,30 @@ function PostPage() {
 
       if (error) {
         console.error("Error fetching post:", error);
-        setPost(null); // Ensure the UI shows a "not found" message
+        setPost(null);
+        setLoading(false);
+        return;
+      }
+
+      setPost(data);
+      setComments(data.comments || []);
+
+      // Fetch referenced post if referencedPostId exists
+      if (data.referencedPostId) {
+        const { data: refData, error: refError } = await supabase
+          .from("posts")
+          .select("*")
+          .eq("id", data.referencedPostId)
+          .single();
+
+        if (refError) {
+          console.error("Error fetching referenced post:", refError);
+          setReferencedPost(null); // Ensure no broken rendering
+        } else {
+          setReferencedPost(refData); // Set the referenced post
+        }
       } else {
-        setPost(data);
-        setComments(data.comments || []); // Initialize comments as an empty array if null
+        setReferencedPost(null); // Clear referenced post if not set
       }
     } catch (err) {
       console.error("Unexpected error fetching post:", err);
@@ -186,84 +208,93 @@ function PostPage() {
 
   return (
     <div className="post-page">
-  <h1>{post.title}</h1>
-  <p className="post-id">Post ID: {post.id}</p> {/* Display the Post ID */}
-  {post.imageURL && <img src={post.imageURL} alt={post.title} className="post-image" />}
-  <p>{post.description}</p>
-  <p>Posted: {new Date(post.created_at).toLocaleString()}</p>
-  <p>Upvotes: {post.upvotes}</p>
+      {referencedPost ? (
+        <div className="referenced-post">
+          <h2>Referenced Post</h2>
+          <p>
+            <Link to={`/post/${referencedPost.id}`}>{referencedPost.title}</Link>
+          </p>
+        </div>
+      ) : null}
 
-  <div className="secret-key-section">
-    <h3>Enter Your Secret Key</h3>
-    <input
-      type="password"
-      placeholder="Enter Secret Key"
-      value={secretKey}
-      onChange={(e) => setSecretKey(e.target.value)}
-      className="secret-key-input"
-    />
-  </div>
+      <h1>{post.title}</h1>
+      <p className="post-id">Post ID: {post.id}</p>
+      {post.imageURL && <img src={post.imageURL} alt={post.title} className="post-image" />}
+      <p>{post.description}</p>
+      <p>Posted: {new Date(post.created_at).toLocaleString()}</p>
+      <p>Upvotes: {post.upvotes}</p>
 
-  <div className="post-actions">
-    <button onClick={handleUpvote} className="upvote-button">Upvote</button>
-    <button onClick={startEditing} className="edit-button">Edit Post</button>
-    <button onClick={handleDeletePost} className="delete-button">Delete Post</button>
-  </div>
+      <div className="secret-key-section">
+        <h3>Enter Your Secret Key</h3>
+        <input
+          type="password"
+          placeholder="Enter Secret Key"
+          value={secretKey}
+          onChange={(e) => setSecretKey(e.target.value)}
+          className="secret-key-input"
+        />
+      </div>
 
-  {editing ? (
-    <div className="edit-form">
-      <h2>Edit Post</h2>
-      <input
-        type="text"
-        value={updatedPost.title}
-        onChange={(e) => setUpdatedPost({ ...updatedPost, title: e.target.value })}
-        placeholder="Title"
-      />
-      <textarea
-        value={updatedPost.description}
-        onChange={(e) => setUpdatedPost({ ...updatedPost, description: e.target.value })}
-        placeholder="Description"
-      />
-      <input
-        type="text"
-        value={updatedPost.imageURL}
-        onChange={(e) => setUpdatedPost({ ...updatedPost, imageURL: e.target.value })}
-        placeholder="Image URL"
-      />
-      <button onClick={saveChanges} className="save-button">Save Changes</button>
-      <button onClick={() => setEditing(false)} className="cancel-button">Cancel</button>
-    </div>
-  ) : (
-    <div className="comments-section">
-      <h2>Comments</h2>
-      {comments.length > 0 ? (
-        comments.map((comment, index) => (
-          <div key={index} className="comment">
-            <p>{comment}</p>
-            <button
-              onClick={() => handleDeleteComment(index)}
-              className="delete-comment-button"
-            >
-              Delete
-            </button>
-          </div>
-        ))
+      <div className="post-actions">
+        <button onClick={handleUpvote}>Upvote</button>
+        <button onClick={startEditing}>Edit</button>
+        <button onClick={handleDeletePost}>Delete</button>
+      </div>
+
+      {editing ? (
+        <div className="edit-form">
+          <h3>Edit Post</h3>
+          <input
+            value={updatedPost.title}
+            onChange={(e) => setUpdatedPost({ ...updatedPost, title: e.target.value })}
+          />
+          <textarea
+            value={updatedPost.description}
+            onChange={(e) => setUpdatedPost({ ...updatedPost, description: e.target.value })}
+          />
+          <input
+            value={updatedPost.imageURL}
+            onChange={(e) => setUpdatedPost({ ...updatedPost, imageURL: e.target.value })}
+          />
+          <button onClick={saveChanges}>Save</button>
+          <button onClick={() => setEditing(false)}>Cancel</button>
+        </div>
       ) : (
-        <p>No comments yet. Be the first to comment!</p>
-      )}
-      <textarea
-        placeholder="Add a comment..."
-        value={newComment}
-        onChange={(e) => setNewComment(e.target.value)}
-        className="comment-input"
-      ></textarea>
-      <button onClick={handleAddComment} className="add-comment-button">
-        Add Comment
-      </button>
-    </div>
+        <div className="comments-section">
+  <h3>Comments</h3>
+  {comments.length > 0 ? (
+    comments.map((comment, index) => (
+      <div className="comment" key={index}>
+        <p>{comment}</p>
+        <button
+          onClick={() => handleDeleteComment(index)}
+          className="delete-comment-button"
+        >
+          Delete
+        </button>
+      </div>
+    ))
+  ) : (
+    <p>No comments yet. Be the first to comment!</p>
   )}
+  <div className="comment-controls">
+    <textarea
+      className="comment-input"
+      placeholder="Add a comment..."
+      value={newComment}
+      onChange={(e) => setNewComment(e.target.value)}
+    ></textarea>
+    <button
+      onClick={handleAddComment}
+      className="add-comment-button"
+    >
+      Add Comment
+    </button>
+  </div>
 </div>
 
+      )}
+    </div>
   );
 }
 

@@ -7,12 +7,13 @@ function CreatePost() {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [imageUrl, setImageUrl] = useState("");
-  const [secretKey, setSecretKey] = useState(""); // New state for the secret key
+  const [referencedPostId, setReferencedPostId] = useState(""); // For referencing another post
+  const [secretKey, setSecretKey] = useState(""); // For user-defined secret key
   const navigate = useNavigate();
 
   const createPost = async () => {
-    if (!title.trim() || !description.trim() || !secretKey.trim()) {
-      alert("Please fill in all required fields, including the secret key.");
+    if (!title.trim() || !secretKey.trim()) {
+      alert("Title and secret key are required!");
       return;
     }
 
@@ -21,9 +22,9 @@ function CreatePost() {
         title,
         description,
         imageURL: imageUrl,
+        referencedPostId: referencedPostId || null, // Save referenced post ID if provided
         secretKey,
         upvotes: 0,
-        comments: [], // Initialize comments as an empty array
       },
     ]);
 
@@ -32,7 +33,7 @@ function CreatePost() {
       alert("Error creating post. Please try again.");
     } else {
       alert("Post created successfully!");
-      navigate("/"); // Redirect to the home page
+      navigate("/");
     }
   };
 
@@ -44,26 +45,29 @@ function CreatePost() {
         placeholder="Title"
         value={title}
         onChange={(e) => setTitle(e.target.value)}
-        required
       />
       <textarea
         placeholder="Description"
         value={description}
         onChange={(e) => setDescription(e.target.value)}
-        required
       ></textarea>
       <input
         type="text"
-        placeholder="Image URL (optional)"
+        placeholder="Image URL"
         value={imageUrl}
         onChange={(e) => setImageUrl(e.target.value)}
       />
       <input
-        type="password" // Use password input type to hide the key
-        placeholder="Create a Secret Key"
+        type="text"
+        placeholder="Referenced Post ID (optional)"
+        value={referencedPostId}
+        onChange={(e) => setReferencedPostId(e.target.value)}
+      />
+      <input
+        type="password"
+        placeholder="Set a Secret Key"
         value={secretKey}
         onChange={(e) => setSecretKey(e.target.value)}
-        required
       />
       <button onClick={createPost}>Submit</button>
       <button onClick={() => navigate("/")}>Cancel</button>
